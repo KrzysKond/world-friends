@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Map{% endblock %}
+
+{% block content %}
+<h1>Worldo Map</h1>
+    
+<div class="container">
+    <div class="form-container">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    <div class="map-container">
+        <div id="map" style="width: 800px; height: 600px;"></div>
+        <div class = "map-label">Double click to select a point</div>
+    </div>
+
+</div>
+    
+
+    
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script type="text/javascript" src="{% static 'scripts/map.js' %}"></script>
+    <br>
+    <h2>Your Friends</h2>
+{% if people %}
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Origin</th>
+                    <th>Residence</th>
+                    <th>Age</th>
+                    <th>Photo</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for person in people %}
+                    <tr>
+                        <td>{{ person.name }}</td>
+                        <td>{{ person.origin }}</td>
+                        <td>{{ person.residence }}</td>
+                        <td>{{ person.age }}</td>
+                        <td>
+                            {% if person.photo %}
+                                <a href="{{ person.photo.url }}" target="_blank">
+                                    <img src="{{ person.photo.url }}" alt="{{ person.name }}'s photo" style="width:100px;height:auto;"/>
+                                </a>
+                            {% else %}
+                                No photo available.
+                            {% endif %}
+                        </td>
+                        <td>
+                            <form method="post" style="display:inline;">
+                                {% csrf_token %}
+                                <input type="hidden" name="delete_person_id" value="{{ person.id }}">
+                                <button type="submit">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <p>No details found.</p>
+{% endif %}
+{% endblock %}
+
