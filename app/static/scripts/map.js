@@ -18,18 +18,23 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(data => {
             data.forEach(person => {
             const photoHtml = person.photo
-                ? `<a href="${person.photo}" target="_blank">
+                ? `
                     <img src="${person.photo}" alt="${person.name}'s photo" style="width:100px;height:auto;"/>
-                   </a>`
+                   `
                 : '';
 
-            const popupContent = `     
-                <strong>${person.name}</strong><br>
-                Origin: ${person.origin}<br>
-                Age: ${new Date().getFullYear() - person.born}
-                <br>
-                 ${photoHtml}
-            `;
+
+
+            const popupContent = `
+                <a href="/person/${person.id}/" style="text-decoration: none; color: inherit; display: block;">
+                    <strong>${person.name}</strong><br>
+                    Origin: ${person.origin}<br>
+                    Age: ${new Date().getFullYear() - person.born}<br><br>
+                    ${photoHtml}
+                </a>`;
+
+
+
 
             // Add a marker for each friend
             L.marker([parseFloat(person.latitude), parseFloat(person.longitude)])

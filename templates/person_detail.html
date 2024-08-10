@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ person.name }} - Details
+{% endblock %}
+
+{% block content %}
+    <div class="person-detail-container">
+        <h1>{{ person.name }}</h1>
+
+        <div class="person-info">
+            <p><strong>Origin:</strong> {{ person.origin }}</p>
+            <p><strong>Born:</strong> {{ person.born }}</p>
+            <p><strong>Country of residence:</strong>{{ person.residence }}</p>
+        </div>
+
+        {% if person.photo %}
+            <div class="person-photo">
+                <img src="{{ person.photo.url }}" alt="{{ person.name }}">
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
